@@ -132,6 +132,7 @@ function App() {
         </section>
         <hr /><br />
       </article>
+      <h1>Hola</h1>
     </Contenedor>
   );
 }

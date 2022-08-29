@@ -35,7 +35,7 @@ const ContenedorAlerta = styled.div`
     flex-wrap: wrap;
     animation: ${slideDown} 4s ease forwards;
  
-    p {
+    p, article {
         background: #272427;
         color: #fff;
         padding: 1.25rem 4.5rem;
@@ -44,6 +44,10 @@ const ContenedorAlerta = styled.div`
         text-align: center;
         font-size: 1.5rem;
         cursor: pointer;
+    }
+
+    article{
+        margin-bottom: 1.5rem;
     }
 
     section{
@@ -115,14 +119,15 @@ const VentanaEmergente = ({nodo, estadoVentana, setEstadoVentana, nodosDeConexio
                         <h1>Con:</h1>
                         {nodosDeConexion.map((nodoCxn, index) =>{
                             let estadoCheck = nodosConectados.some(indice => indice === nodoCxn.id);
-                            return <NodoConexion
-                                key={'div-nodoCnx' + nodoCxn.id}
+                            return <article key={'div-nodoCnx' + nodoCxn.id}>
+                                <NodoConexion
                                 nodoCxn={nodoCxn}
                                 estado={estadoCheck}
                                 nodosConectados={nodosConectados}
                                 setNodosConectados={setNodosConectados}
                                 index={index}
-                            />
+                                />
+                            </article>
                         })}
                         <Boton 
                             onClick={() =>{

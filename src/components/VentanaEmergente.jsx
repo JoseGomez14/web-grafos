@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import NodoConexion from './NodoConexion';
 
@@ -39,14 +39,15 @@ const ContenedorAlerta = styled.div`
         color: #fff;
         padding: 1.25rem 4.5rem;
         box-shadow: 0px 0px 15px #a8a8a818;
+        border-radius: 0.4rem; /* 5px */
         text-align: center;
         font-size: 1.5rem;
     }
 
     section{
         background-color: #272427;
-        padding: 3rem 3rem;    
-        border-radius: 0.31rem; /* 5px */
+        padding: 3rem 5rem;    
+        border-radius: 0.4rem; /* 5px */
     }
 
     h1{
@@ -56,6 +57,37 @@ const ContenedorAlerta = styled.div`
 `;
 
 const VentanaEmergente = ({nodo, estadoVentana, setEstadoVentana, nodosDeConexion, matrizAdya, setMatrizAdya}) => {
+    let nodosIniciales = [];
+
+    for (let i = 0; i < matrizAdya[nodo.id].length; i++) {
+        if (matrizAdya[nodo.id][i]) {
+            nodosIniciales.push(i);
+        }
+    }
+
+    const [nodosConectados, setNodosConectados] = useState(nodosIniciales);
+
+    const cambiarMatriz = () => {
+        let matriz = [];
+        let fila = [];
+        let nodosRef = [];
+        nodosRef = nodosRef.concat(nodosConectados);
+        matriz = matriz.concat(matrizAdya);
+        for (let i = 0; i < matrizAdya.length; i++) {
+            let estadoNodo = nodosRef.some(indice => indice === i);
+            fila = [];
+            fila = fila.concat(matriz[nodo.id]);
+            fila[i] = estadoNodo;
+            matriz[nodo.id] = fila;
+            
+            fila = []
+            fila = fila.concat(matriz[i]);
+            fila[nodo.id] = estadoNodo;
+            matriz[i] = fila;
+        }
+        setMatrizAdya(matriz);
+    }
+
     return (
 		<>
 			{estadoVentana &&
@@ -65,21 +97,18 @@ const VentanaEmergente = ({nodo, estadoVentana, setEstadoVentana, nodosDeConexio
                         <p>{nodo.nombre}</p>
                         <h1>Con:</h1>
                         {nodosDeConexion.map(nodoCxn =>{
-                            let matrizCheck = [];
-                            matrizCheck = matrizCheck.concat(matrizAdya);
-                            let filaCheck = [];
-                            filaCheck = filaCheck.concat(matrizCheck[nodo.id]);
-                            return <NodoConexion 
+                            let estadoCheck = nodosConectados.some(indice => indice === nodoCxn.id);
+                            return <NodoConexion
                                 key={'div-nodoCnx' + nodoCxn.id}
-                                estadoCheck={filaCheck[nodoCxn.id]}
-                                matrizAdya={matrizAdya}
-                                setMatrizAdya={setMatrizAdya}
-                                nodo={nodo}
                                 nodoCxn={nodoCxn}
+                                estado={estadoCheck}
+                                nodosConectados={nodosConectados}
+                                setNodosConectados={setNodosConectados}
                             />
                         })}
                         <button onClick={() =>{
                                 setEstadoVentana(false);
+                                cambiarMatriz();
                             }}>Actualizar Conexiones
                         </button>
                     </section>

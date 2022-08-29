@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Matrices from './components/Matrices';
 import Nodo from './components/Nodo';
@@ -9,24 +9,27 @@ function App() {
   const [matrizAdya, setMatrizAdya] = useState([]);
   const [matricesGraf, setMatricesGraf] = useState();
 
-  const actualizarNodos = (e)=>{
+  const actualizarNodos = (e) => {
     e.preventDefault();
     let arrNodos = [];
-    for(let i = 1; i <= numNodos; i++){
+
+    // Crea el arreglo de nodos
+    for (let i = 1; i <= numNodos; i++) {
       arrNodos.push({
         nombre: "N" + i,
         id: i - 1
       });
     }
 
+    //Crea los nodos de conexión
     for (let i = 0; i < arrNodos.length; i++) {
       let nodosDeConexion = [];
       for (let j = 0; j < arrNodos.length; j++) {
-        if(j !== i){
+        if (j !== i) {
           nodosDeConexion.push(arrNodos[j]);
-        }       
+        }
       }
-      arrNodos[i] = {...arrNodos[i], nodos: nodosDeConexion};
+      arrNodos[i] = { ...arrNodos[i], nodos: nodosDeConexion };
     }
 
     setNodos(arrNodos);
@@ -34,27 +37,48 @@ function App() {
     let matrizAux = [];
     let matrizAuxColumnas = [];
 
+    //Crea la matriz de adyacencia
     for (let i = 0; i < numNodos; i++) {
       matrizAuxColumnas.push(false);
     }
     for (let i = 0; i < numNodos; i++) {
       matrizAux.push(matrizAuxColumnas);
     }
-
     setMatrizAdya(matrizAux);
   }
 
-  const cambiarNumNodos = (e) =>{
+  const cambiarNumNodos = (e) => {
     setNumNodos(e.target.value);
   }
 
-  const mostrarMatrices = ()=>{
-    let tablas;
-    tablas = <Matrices
-      matrizAdya={matrizAdya}
-    />
-    setMatricesGraf(tablas);
+  const mostrarConclusiones = () => {
+    let conclusiones;
+    conclusiones = <>
+      <Matrices
+        matriz={matrizAdya}
+        titulo={'Matriz de Adyacencia'}
+        letraTitulo={'N'}
+      />
+      <Matrices
+        matriz={matrizAdya}
+        titulo={'Matriz de Incidencia'}
+        letraTitulo={'L'}
+      />
+      <h1>Número de aristas: {contarAristas(matrizAdya)}</h1>
+    </>
+    setMatricesGraf(conclusiones);
   }
+
+  function contarAristas(matriz) {
+    let acum = 0;
+    for (let i = 0; i < matriz.length; i++) {
+      for (let j = 0; j < matriz[i].length; j++) {
+        acum += matriz[i][j];
+      }
+    }
+    return acum/2;
+  }
+
 
   return (
     <div className="App">
@@ -64,40 +88,40 @@ function App() {
         <form onSubmit={actualizarNodos}>
           <label htmlFor='inp-numNodos'>
             Número de nodos:
-            <br/>
-            <input 
+            <br />
+            <input
               id='inp-numNodos'
               type='number'
               placeholder='Número de nodos'
               min={1}
               onChange={cambiarNumNodos}
-              />
+            />
           </label>
-          <br/>
+          <br />
           <button type='submit'>Construir Nodos</button>
         </form>
       </article>
-      <hr/>
+      <hr />
       <article>
         <p><b>Paso 2:</b> Defina las conexiones entre los nodos.</p>
         <section>
           {nodos.map((nodo) => {
             return <Nodo
-                key={nodo.id}
-                nodo={nodo}
-                nodosDeConexion={nodo.nodos}
-                matrizAdya={matrizAdya}
-                setMatrizAdya={setMatrizAdya}
-              />
+              key={nodo.id}
+              nodo={nodo}
+              nodosDeConexion={nodo.nodos}
+              matrizAdya={matrizAdya}
+              setMatrizAdya={setMatrizAdya}
+            />
           })}
         </section>
-        <hr/>
+        <hr />
         <section>
           <p><b>Paso 3:</b> Cuando su grafo esté listo oprima el botón de <b>Obtener Resultados</b> para ver las conclusiones del grafo introducido.</p>
           {matricesGraf}
-          <button onClick={mostrarMatrices}>Obtener Resultados</button>
+          <button onClick={mostrarConclusiones}>Obtener Resultados</button>
         </section>
-        <br/>
+        <br />
       </article>
     </div>
   );

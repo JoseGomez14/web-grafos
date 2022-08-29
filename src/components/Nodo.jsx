@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import VentanaEmergente from '../elements/VentanaEmergente'
+import VentanaEmergente from './VentanaEmergente'
 
 const Nodo = ({nodo, nodosDeConexion, matrizAdya, setMatrizAdya}) => {    
     const [estadoVentana, setEstadoVentana] = useState(false);

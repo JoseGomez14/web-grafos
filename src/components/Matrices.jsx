@@ -10,7 +10,7 @@ const ContenedorTabla = styled.div`
         border-collapse: collapse;
     }
 
-    td{
+    td, th{
         border: 1px solid gray;
         font-size: 1.5rem;
         p{
@@ -23,20 +23,32 @@ const ContenedorTabla = styled.div`
     }
 `;
 
-const Matrices = ({matrizAdya}) => {
+const Matrices = ({matriz, letraTitulo, titulo,  numAristas}) => {
     return ( 
         <div>
-            {matrizAdya.length > 0?
+            {matriz.length > 0?
             <section>
-            <h1>Matriz de Adyacencia</h1>
+            <h1>{titulo}</h1>
             <ContenedorTabla>
                 <table>
                     <tbody>
+                    <tr id='row-table-title'>
+                        <th scope="row"></th>
+                        {matriz.map((columna, indexCol) => {
+                            return <th key={'col-table-title'+ indexCol}>
+                                <p>{letraTitulo + (indexCol + 1)}</p>
+                                </th>
+                            })
+                        }
+                    </tr>
                     {
-                        matrizAdya.map((fila, index) => {
-                            return <tr key={'row-adya'+ index}>
-                                {fila.map((columna, index) => {
-                                return  <td key={'col-adya'+ index}>
+                        matriz.map((fila, indexFila) => {
+                            return <tr key={'row-table'+ indexFila}>
+                                <th>
+                                    <p>N{indexFila + 1}</p>
+                                </th>
+                                {fila.map((columna, indexCol) => {                      
+                                    return <td key={'col-table' + indexCol}>
                                         <p>{columna? "1": "0"}</p>
                                     </td>
                                 })}
@@ -49,11 +61,11 @@ const Matrices = ({matrizAdya}) => {
         </section>
         :
         <section>
-            <p>Aún no hay datos para el grafo</p>
+            <p>Aún no hay datos en el grafo</p>
         </section>}
         <br></br>
         </div>
      );
 }
- 
+
 export default Matrices;

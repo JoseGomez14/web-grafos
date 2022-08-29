@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import './App.css';
 import Matrices from './components/Matrices';
 import Nodo from './components/Nodo';
+import Boton from './elements/Boton';
+import Contenedor from './elements/Contenedor';
+import Input from './elements/Input';
+import styled from 'styled-components';
 
 function App() {
   const [numNodos, setNumNodos] = useState();
@@ -53,19 +57,27 @@ function App() {
 
   const mostrarConclusiones = () => {
     let conclusiones;
-    conclusiones = <>
-      <Matrices
-        matriz={matrizAdya}
-        titulo={'Matriz de Adyacencia'}
-        letraTitulo={'N'}
-      />
-      <Matrices
-        matriz={matrizAdya}
-        titulo={'Matriz de Incidencia'}
-        letraTitulo={'L'}
-      />
-      <h1>Número de aristas: {contarAristas(matrizAdya)}</h1>
-    </>
+    if(matrizAdya.length > 0){
+      conclusiones = <>
+        <Matrices
+          matriz={matrizAdya}
+          titulo={'Matriz de Adyacencia'}
+          letraTitulo={'N'}
+        />
+        <Matrices
+          matriz={matrizAdya}
+          titulo={'Matriz de Incidencia'}
+          letraTitulo={'L'}
+        />
+        <h1>Número de aristas: {contarAristas(matrizAdya)}</h1>
+        <br/>
+      </>
+    }else{
+      conclusiones = <>
+        <Parrafo rojo>Aún no hay datos en el grafo.</Parrafo>
+      </>
+    }
+    
     setMatricesGraf(conclusiones);
   }
 
@@ -76,35 +88,32 @@ function App() {
         acum += matriz[i][j];
       }
     }
-    return acum/2;
+    return acum / 2;
   }
 
 
   return (
-    <div className="App">
+    <Contenedor className="App">
       <article>
         <h1>Representación y Análisis de Grafos No Dirigidos</h1>
-        <p><b>Paso 1:</b> Defina el número de nodos del grafo a representar.</p>
+        <br /><hr />
+        <Parrafo><b>Paso 1:</b> Defina el número de nodos del grafo a representar.</Parrafo>
         <form onSubmit={actualizarNodos}>
-          <label htmlFor='inp-numNodos'>
-            Número de nodos:
-            <br />
-            <input
-              id='inp-numNodos'
-              type='number'
-              placeholder='Número de nodos'
-              min={1}
-              onChange={cambiarNumNodos}
-            />
-          </label>
+          <Input
+            id='inp-numNodos'
+            type='number'
+            placeholder='Número de nodos'
+            min={1}
+            onChange={cambiarNumNodos}
+          />
           <br />
-          <button type='submit'>Construir Nodos</button>
+          <Boton type='submit'>Construir Nodos</Boton>
         </form>
       </article>
       <hr />
       <article>
-        <p><b>Paso 2:</b> Defina las conexiones entre los nodos.</p>
-        <section>
+        <Parrafo><b>Paso 2:</b> Defina las conexiones entre los nodos.</Parrafo>
+        <ContendorNodos>
           {nodos.map((nodo) => {
             return <Nodo
               key={nodo.id}
@@ -114,17 +123,30 @@ function App() {
               setMatrizAdya={setMatrizAdya}
             />
           })}
-        </section>
+        </ContendorNodos>
         <hr />
         <section>
-          <p><b>Paso 3:</b> Cuando su grafo esté listo oprima el botón de <b>Obtener Resultados</b> para ver las conclusiones del grafo introducido.</p>
+          <Parrafo><b>Paso 3:</b> Cuando su grafo esté listo oprima el botón de <b>Obtener Resultados</b> para ver las conclusiones del grafo introducido.</Parrafo>
           {matricesGraf}
-          <button onClick={mostrarConclusiones}>Obtener Resultados</button>
+          <Boton onClick={mostrarConclusiones}>Obtener Resultados</Boton>
         </section>
-        <br />
+        <hr /><br />
       </article>
-    </div>
+    </Contenedor>
   );
 }
+
+const ContendorNodos = styled.div`
+    display: flex;
+    gap: 20px;
+    margin-bottom: 2rem;
+    width: 100%;
+    flex-wrap: wrap;
+`;
+
+const Parrafo = styled.p`
+  color: ${(props => props.rojo? '#E34747': 'black')};
+  font-size: 1.15rem;
+`;
 
 export default App;

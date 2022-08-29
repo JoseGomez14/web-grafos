@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import NodoConexion from './NodoConexion';
+import Boton from '../elements/Boton';
 
 const slideDown = keyframes`
     0% {
@@ -39,15 +40,31 @@ const ContenedorAlerta = styled.div`
         color: #fff;
         padding: 1.25rem 4.5rem;
         box-shadow: 0px 0px 15px #a8a8a818;
-        border-radius: 0.4rem; /* 5px */
+        border-radius: 0.4rem;
         text-align: center;
         font-size: 1.5rem;
+        cursor: pointer;
     }
 
     section{
         background-color: #272427;
         padding: 3rem 5rem;    
-        border-radius: 0.4rem; /* 5px */
+        border-radius: 0.4rem;
+        max-height: 90vh;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar
+        {
+            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0);
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb
+        {
+            background-color: #D4D4D4;
+            border-radius: 8px;
+        }
     }
 
     h1{
@@ -94,9 +111,9 @@ const VentanaEmergente = ({nodo, estadoVentana, setEstadoVentana, nodosDeConexio
 				<ContenedorAlerta>
 					<section>
                         <h1>Conectar:</h1>
-                        <p>{nodo.nombre}</p>
+                        <p><b>{nodo.nombre}</b></p>
                         <h1>Con:</h1>
-                        {nodosDeConexion.map(nodoCxn =>{
+                        {nodosDeConexion.map((nodoCxn, index) =>{
                             let estadoCheck = nodosConectados.some(indice => indice === nodoCxn.id);
                             return <NodoConexion
                                 key={'div-nodoCnx' + nodoCxn.id}
@@ -104,13 +121,16 @@ const VentanaEmergente = ({nodo, estadoVentana, setEstadoVentana, nodosDeConexio
                                 estado={estadoCheck}
                                 nodosConectados={nodosConectados}
                                 setNodosConectados={setNodosConectados}
+                                index={index}
                             />
                         })}
-                        <button onClick={() =>{
-                                setEstadoVentana(false);
-                                cambiarMatriz();
-                            }}>Actualizar Conexiones
-                        </button>
+                        <Boton 
+                            onClick={() =>{
+                            setEstadoVentana(false);
+                            cambiarMatriz();
+                        }}
+                        marginTop
+                        >Actualizar Conexiones</Boton>
                     </section>
 				</ContenedorAlerta>
 			}

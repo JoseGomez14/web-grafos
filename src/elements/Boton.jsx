@@ -1,0 +1,28 @@
+import styled from 'styled-components';
+
+const Boton = styled.button`
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+    
+    background: ${(props) => props.primario ? '#40779c' : '#43A854'};
+    width: ${(props) => props.conIcono ? '15.62rem' : 'auto'}; /* 250px */
+    margin-bottom: 1rem;
+    margin-top: ${(props) => props.marginTop ? '1rem' : '0'};
+    border: none;
+    border-radius: 1.4rem; /* 10px */
+    color: #fff;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    height: 3rem;
+    padding: 1.5rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    outline: none;
+
+`;
+
+export default Boton;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import '../elements/Checkbox.css';
 
-const NodoConexion = ({nodoCxn, estado, nodosConectados, setNodosConectados}) => {
+const NodoConexion = ({nodoCxn, estado, nodosConectados, setNodosConectados, index}) => {
     const [estadoCheckBox, setEstadoCheckBox] = useState(estado);
     useEffect(() => {
         actualizarNodoConectado();
@@ -23,14 +24,26 @@ const NodoConexion = ({nodoCxn, estado, nodosConectados, setNodosConectados}) =>
 
     return (
         <p>
-            <input
-                type="checkbox"
-                name="cnxNdo"
-                id="cnxNdo"
-                checked={estadoCheckBox}
-                onChange={() =>setEstadoCheckBox(!estadoCheckBox)}           
-            />
-            {nodoCxn.nombre}
+            <div class="toggler">
+                <b>{nodoCxn.nombre}</b>
+                <input 
+                    id={'toggler-' + index}
+                    name={'toggler-' + index}
+                    type="checkbox"
+                    value="1"
+                    checked={estadoCheckBox}
+                    onChange={() =>setEstadoCheckBox(!estadoCheckBox)}
+                />
+                <label for={'toggler-' + index}>
+                    <svg class="toggler-on" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+                        <polyline class="path check" points="100.2,40.2 51.5,88.8 29.8,67.5"></polyline>
+                    </svg>
+                    <svg class="toggler-off" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+                        <line class="path line" x1="34.4" y1="34.4" x2="95.8" y2="95.8"></line>
+                        <line class="path line" x1="95.8" y1="34.4" x2="34.4" y2="95.8"></line>
+                    </svg>
+                </label>
+            </div>
         </p>
     );
 }

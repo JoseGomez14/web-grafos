@@ -5,13 +5,17 @@ const ContenedorTabla = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap ;
+    flex-direction: column;
     
     table{
         border-collapse: collapse;
+        border-radius: 10px; 
+        box-shadow: 0px 0px 3px #ccc; 
     }
 
     td, th{
-        border: 1px solid gray;
+        box-shadow: 0px 0px 1px #ccc; 
         font-size: 1.5rem;
         p{
             margin: 16px 24px;
@@ -26,10 +30,8 @@ const ContenedorTabla = styled.div`
 const Matrices = ({matriz, letraTitulo, titulo,  numAristas}) => {
     return ( 
         <div>
-            {matriz.length > 0?
-            <section>
-            <h1>{titulo}</h1>
             <ContenedorTabla>
+                <h1>{titulo}</h1>
                 <table>
                     <tbody>
                     <tr id='row-table-title'>
@@ -58,11 +60,6 @@ const Matrices = ({matriz, letraTitulo, titulo,  numAristas}) => {
                     </tbody>
                 </table>
             </ContenedorTabla>
-        </section>
-        :
-        <section>
-            <p>Aún no hay datos en el grafo</p>
-        </section>}
         <br></br>
         </div>
      );

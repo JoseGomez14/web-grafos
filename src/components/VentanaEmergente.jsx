@@ -74,6 +74,7 @@ const ContenedorAlerta = styled.div`
     h1{
         color: #fff;
         font-size: 1.5rem;
+        font-weight: 400;
     }
 `;
 
@@ -131,8 +132,9 @@ const VentanaEmergente = ({nodo, estadoVentana, setEstadoVentana, nodosDeConexio
                         })}
                         <Boton 
                             onClick={() =>{
-                            setEstadoVentana(false);
                             cambiarMatriz();
+                            setEstadoVentana(false);
+                            console.log();
                         }}
                         marginTop
                         >Actualizar Conexiones</Boton>

@@ -7,10 +7,6 @@ const Input = styled.input`
     outline: none;
     margin: 1rem 0;
     text-align: center;
- 
-    @media(max-width: 60rem){ /* 950px */
-        font-size: 2.2rem; /* 24px */
-    }
 `;
 
 export default Input;

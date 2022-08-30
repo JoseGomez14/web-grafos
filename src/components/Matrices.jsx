@@ -1,68 +1,38 @@
 import React from 'react'
-import styled from 'styled-components';
+import {ContenedorTabla, Tabla} from '../elements/Tablas'
 
-const ContenedorTabla = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap ;
-    flex-direction: column;
-    
-    table{
-        border-collapse: collapse;
-        border-radius: 10px; 
-        box-shadow: 0px 0px 3px #ccc; 
-    }
-
-    td, th{
-        box-shadow: 0px 0px 1px #ccc; 
-        font-size: 1.5rem;
-        p{
-            margin: 16px 24px;
-        }
-    }
-    
-    tr:nth-child(even){
-        background: #F3F3F3;
-    }
-`;
-
-const Matrices = ({matriz, letraTitulo, titulo,  numAristas}) => {
-    return ( 
+const Matrices = ({ matriz, letraTitulo, titulo, numAristas }) => {
+    return (
         <div>
             <ContenedorTabla>
                 <h1>{titulo}</h1>
-                <table>
+                <Tabla>
+                    <thead>
+                        <tr id='row-table-title'>
+                            <th></th>
+                            {matriz[0].map((columna, indexCol) => {
+                                return <th key={'col-table-title' + indexCol}>{letraTitulo + (indexCol + 1)}</th>
+                            })
+                            }
+                        </tr>
+                    </thead>
                     <tbody>
-                    <tr id='row-table-title'>
-                        <th scope="row"></th>
-                        {matriz.map((columna, indexCol) => {
-                            return <th key={'col-table-title'+ indexCol}>
-                                <p>{letraTitulo + (indexCol + 1)}</p>
-                                </th>
+                        {
+                            matriz.map((fila, indexFila) => {
+                                return <tr key={'row-table' + indexFila}>
+                                    <th>N{indexFila + 1}</th>
+                                    {fila.map((columna, indexCol) => {
+                                        return <td key={'col-table' + indexCol}>{columna ? "1" : "0"}</td>
+                                    })}
+                                </tr>
                             })
                         }
-                    </tr>
-                    {
-                        matriz.map((fila, indexFila) => {
-                            return <tr key={'row-table'+ indexFila}>
-                                <th>
-                                    <p>N{indexFila + 1}</p>
-                                </th>
-                                {fila.map((columna, indexCol) => {                      
-                                    return <td key={'col-table' + indexCol}>
-                                        <p>{columna? "1": "0"}</p>
-                                    </td>
-                                })}
-                            </tr>
-                        })
-                    }
                     </tbody>
-                </table>
+                </Tabla>
             </ContenedorTabla>
-        <br></br>
+            <br></br>
         </div>
-     );
+    );
 }
 
 export default Matrices;

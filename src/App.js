@@ -11,7 +11,7 @@ function App() {
   const [numNodos, setNumNodos] = useState();
   const [nodos, setNodos] = useState([]);
   const [matrizAdya, setMatrizAdya] = useState([]);
-  const [matricesGraf, setMatricesGraf] = useState();
+  const [resultadosAnalisis, setResultadosAnalisis] = useState();
 
   const actualizarNodos = (e) => {
     e.preventDefault();
@@ -57,6 +57,11 @@ function App() {
 
   const mostrarConclusiones = () => {
     let conclusiones;
+    let matrizInci = matrizIncidencia(matrizAdya);
+    let numAristas = 0;
+    if(matrizInci != null){
+      numAristas = matrizInci[0].length;
+    }
     if(matrizAdya.length > 0){
       conclusiones = <>
         <Matrices
@@ -64,12 +69,14 @@ function App() {
           titulo={'Matriz de Adyacencia'}
           letraTitulo={'N'}
         />
-        <Matrices
-          matriz={matrizAdya}
-          titulo={'Matriz de Incidencia'}
-          letraTitulo={'L'}
-        />
-        <h1>Número de aristas: {contarAristas(matrizAdya)}</h1>
+        {matrizInci !== null?
+          <Matrices
+            matriz={matrizInci}
+            titulo={'Matriz de Incidencia'}
+            letraTitulo={'L'}
+          />:<Parrafo rojo>El grafo no tiene aristas, por lo tanto, no se construye <b>la matriz de incidencia.</b></Parrafo>
+        }
+        <Parrafo><b>Número de aristas: {numAristas}</b></Parrafo>
         <br/>
       </>
     }else{
@@ -78,17 +85,42 @@ function App() {
       </>
     }
     
-    setMatricesGraf(conclusiones);
+    setResultadosAnalisis(conclusiones);
   }
 
-  function contarAristas(matriz) {
-    let acum = 0;
-    for (let i = 0; i < matriz.length; i++) {
-      for (let j = 0; j < matriz[i].length; j++) {
-        acum += matriz[i][j];
+  const matrizIncidencia = (matriz)=>{
+    let colRef = [];
+    let estadoIncidencia = false;
+    for(let i = 0; i < matriz.length; i++){colRef.push(false)}  
+
+    let matrizInci = [];
+    for(let col = 1; col < matriz.length; col++){
+      for(let row = 0; row < col; row++){
+        let colRefAux = colRef.slice();
+        if(matriz[row][col]){
+          colRefAux[row] = true;
+          colRefAux[col] = true;
+          matrizInci.push(colRefAux);
+          estadoIncidencia = true;
+        }
       }
     }
-    return acum / 2;
+
+    if(estadoIncidencia){return transponerMatriz(matrizInci)}
+    else{return null}
+  }
+  
+  const transponerMatriz = (matriz)=>{
+    let matrizTransp = [];
+  
+    for(let x  = 0; x < matriz[0].length; x++){
+      let filaAux = [];
+      for(let y = 0; y < matriz.length; y++){
+        filaAux.push(matriz[y][x]);
+      }
+      matrizTransp.push(filaAux);
+    }
+    return matrizTransp
   }
 
 
@@ -109,8 +141,8 @@ function App() {
           <br />
           <Boton type='submit'>Construir Nodos</Boton>
         </form>
+        <hr />
       </article>
-      <hr />
       <article>
         <Parrafo><b>Paso 2:</b> Defina las conexiones entre los nodos.</Parrafo>
         <ContendorNodos>
@@ -127,18 +159,19 @@ function App() {
         <hr />
         <section>
           <Parrafo><b>Paso 3:</b> Cuando su grafo esté listo oprima el botón de <b>Obtener Resultados</b> para ver las conclusiones del grafo introducido.</Parrafo>
-          {matricesGraf}
+          {resultadosAnalisis}
           <Boton onClick={mostrarConclusiones}>Obtener Resultados</Boton>
         </section>
         <hr /><br />
       </article>
-      <h1>Hola</h1>
     </Contenedor>
   );
 }
 
 const ContendorNodos = styled.div`
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
     margin-bottom: 2rem;
     width: 100%;

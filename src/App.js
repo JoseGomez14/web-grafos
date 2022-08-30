@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import {matrizIncidencia, esCompleto, esRegular, esEuleriano} from './funcs/Funciones'
+import {Contenedor, ContendorNodos, P} from './elements/Pprincipal';
 import './App.css';
-import Matrices from './components/Matrices';
+import Input from './elements/Input';
 import Nodo from './components/Nodo';
 import Boton from './elements/Boton';
-import Contenedor from './elements/Contenedor';
-import Input from './elements/Input';
-import styled from 'styled-components';
+import Matrices from './components/Matrices';
 
 function App() {
   const [numNodos, setNumNodos] = useState();
@@ -13,9 +13,11 @@ function App() {
   const [matrizAdya, setMatrizAdya] = useState([]);
   const [resultadosAnalisis, setResultadosAnalisis] = useState();
 
-  const actualizarNodos = (e) => {
-    e.preventDefault();
+  const actualizarNodos = (evt) => {
+    evt.preventDefault();
     let arrNodos = [];
+    let matrizAux = [];
+    let matrizAuxColumnas = [];
 
     // Crea el arreglo de nodos
     for (let i = 1; i <= numNodos; i++) {
@@ -23,6 +25,7 @@ function App() {
         nombre: "N" + i,
         id: i - 1
       });
+      matrizAuxColumnas.push(false);
     }
 
     //Crea los nodos de conexión
@@ -33,154 +36,75 @@ function App() {
           nodosDeConexion.push(arrNodos[j]);
         }
       }
+      matrizAux.push(matrizAuxColumnas);
       arrNodos[i] = { ...arrNodos[i], nodos: nodosDeConexion };
     }
 
     setNodos(arrNodos);
-
-    let matrizAux = [];
-    let matrizAuxColumnas = [];
-
-    //Crea la matriz de adyacencia
-    for (let i = 0; i < numNodos; i++) {
-      matrizAuxColumnas.push(false);
-    }
-    for (let i = 0; i < numNodos; i++) {
-      matrizAux.push(matrizAuxColumnas);
-    }
     setMatrizAdya(matrizAux);
   }
 
-  const cambiarNumNodos = (e) => {
-    setNumNodos(e.target.value);
-  }
+  const cambiarNumNodos = (e) => {setNumNodos(e.target.value)}
 
   const mostrarConclusiones = () => {
-    let conclusiones;
     let matrizInci = matrizIncidencia(matrizAdya);
-    let numAristas = 0;
-    if(matrizInci != null){
-      numAristas = matrizInci[0].length;
-    }
-    if(matrizAdya.length > 0){
-      conclusiones = <>
-        <Matrices
-          matriz={matrizAdya}
-          titulo={'Matriz de Adyacencia'}
-          letraTitulo={'N'}
-        />
+    let numAristas = matrizInci != null? matrizInci[0].length: 0;
+
+    let conclusiones = matrizAdya.length > 0?
+      <>
+        <Matrices matriz={matrizAdya} titulo={'Matriz de Adyacencia'} letraTitulo={'N'}/>
+        
         {matrizInci !== null?
-          <Matrices
-            matriz={matrizInci}
-            titulo={'Matriz de Incidencia'}
-            letraTitulo={'L'}
-          />:<Parrafo rojo>El grafo no tiene aristas, por lo tanto, no se construye <b>la matriz de incidencia.</b></Parrafo>
+        <Matrices matriz={matrizInci} titulo={'Matriz de Incidencia'} letraTitulo={'L'}/>
+        :<P rojo>El grafo no tiene aristas, por lo tanto, no se construye <b>la matriz de incidencia.</b></P>
         }
-        <Parrafo><b>Número de aristas: {numAristas}</b></Parrafo>
+
+        <P><b>Número de aristas: {numAristas}</b></P>
+        <P><b>Grafo completo: {esCompleto(matrizAdya, numAristas)? 'Si': 'No'}</b></P>
+        <P><b>Grafo regular: {esRegular(matrizAdya)? 'Si': 'No'}</b></P>
+        <P><b>Grafo Euleriano: {esEuleriano(matrizAdya, numAristas)? 'Si': 'No'}</b></P>
         <br/>
       </>
-    }else{
-      conclusiones = <>
-        <Parrafo rojo>Aún no hay datos en el grafo.</Parrafo>
-      </>
-    }
-    
+    :<P rojo>Aún no hay datos en el grafo.</P>
+
     setResultadosAnalisis(conclusiones);
   }
-
-  const matrizIncidencia = (matriz)=>{
-    let colRef = [];
-    let estadoIncidencia = false;
-    for(let i = 0; i < matriz.length; i++){colRef.push(false)}  
-
-    let matrizInci = [];
-    for(let col = 1; col < matriz.length; col++){
-      for(let row = 0; row < col; row++){
-        let colRefAux = colRef.slice();
-        if(matriz[row][col]){
-          colRefAux[row] = true;
-          colRefAux[col] = true;
-          matrizInci.push(colRefAux);
-          estadoIncidencia = true;
-        }
-      }
-    }
-
-    if(estadoIncidencia){return transponerMatriz(matrizInci)}
-    else{return null}
-  }
-  
-  const transponerMatriz = (matriz)=>{
-    let matrizTransp = [];
-  
-    for(let x  = 0; x < matriz[0].length; x++){
-      let filaAux = [];
-      for(let y = 0; y < matriz.length; y++){
-        filaAux.push(matriz[y][x]);
-      }
-      matrizTransp.push(filaAux);
-    }
-    return matrizTransp
-  }
-
 
   return (
     <Contenedor className="App">
       <article>
         <h1>Representación y Análisis de Grafos No Dirigidos</h1>
-        <br /><hr />
-        <Parrafo><b>Paso 1:</b> Defina el número de nodos del grafo a representar.</Parrafo>
+        <br/><hr/>
+        <P><b>Paso 1:</b> Defina el número de nodos del grafo a representar.</P>
         <form onSubmit={actualizarNodos}>
-          <Input
-            id='inp-numNodos'
-            type='number'
-            placeholder='Número de nodos'
-            min={1}
+          <Input id='inp-numNodos' type='number' placeholder='Número de nodos' min={1}
             onChange={cambiarNumNodos}
-          />
-          <br />
+          /><br/>
           <Boton type='submit'>Construir Nodos</Boton>
-        </form>
-        <hr />
+        </form><hr/>
       </article>
+
       <article>
-        <Parrafo><b>Paso 2:</b> Defina las conexiones entre los nodos.</Parrafo>
+        <P><b>Paso 2:</b> Defina las conexiones entre los nodos.</P>
         <ContendorNodos>
           {nodos.map((nodo) => {
-            return <Nodo
-              key={nodo.id}
+            return <Nodo key={nodo.id}
               nodo={nodo}
-              nodosDeConexion={nodo.nodos}
               matrizAdya={matrizAdya}
               setMatrizAdya={setMatrizAdya}
             />
           })}
-        </ContendorNodos>
-        <hr />
-        <section>
-          <Parrafo><b>Paso 3:</b> Cuando su grafo esté listo oprima el botón de <b>Obtener Resultados</b> para ver las conclusiones del grafo introducido.</Parrafo>
+        </ContendorNodos><hr />
+      </article>
+
+      <article>
+        <P><b>Paso 3:</b> Cuando su grafo esté listo oprima el botón de <b>Obtener Resultados</b> para ver las conclusiones del grafo introducido.</P>
           {resultadosAnalisis}
-          <Boton onClick={mostrarConclusiones}>Obtener Resultados</Boton>
-        </section>
-        <hr /><br />
+        <Boton onClick={mostrarConclusiones}>Obtener Resultados</Boton>
+        <hr/><br />
       </article>
     </Contenedor>
   );
 }
-
-const ContendorNodos = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 2rem;
-    width: 100%;
-    flex-wrap: wrap;
-`;
-
-const Parrafo = styled.p`
-  color: ${(props => props.rojo? '#E34747': 'black')};
-  font-size: 1.15rem;
-`;
 
 export default App;

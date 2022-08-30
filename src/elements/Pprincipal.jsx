@@ -37,6 +37,38 @@ const Contenedor = styled.div`
     p{
         margin: 1rem 0;
     }
+    
+    article{
+        width: 100%;
+    }
 `;
 
-export default Contenedor;
+const ContendorNodos = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+`;
+
+const ContendorNodo = styled.div`
+    flex: 1 1 300px;
+    border-radius: 10px;
+    background-color: #efefef;
+    width: fit-content;
+    padding: 1rem 2rem;
+    height: 100%;
+    margin: 0;
+    
+    p{
+        font-size: 1.2rem;
+    }
+`;
+
+const P = styled.p`
+  color: ${(props => props.rojo? '#E34747': 'black')};
+  font-size: 1.15rem;
+`;
+
+export {Contenedor, ContendorNodos, ContendorNodo, P};

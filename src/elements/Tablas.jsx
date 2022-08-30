@@ -4,6 +4,7 @@ const ContenedorTabla = styled.div`
     width: 100%;
     margin: auto;
     text-align: center;
+    overflow-x: auto;
 `;
 
 const Tabla = styled.table`

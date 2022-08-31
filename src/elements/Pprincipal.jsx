@@ -10,7 +10,7 @@ const Contenedor = styled.div`
     box-shadow: 0px 1.25rem 2.5rem rgba(0,0,0,.05);
     border-radius: 0.625rem; /* 10px */
     margin: 5vh auto;
-    padding: 2rem 1rem;
+    padding: 0 1rem;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -33,13 +33,12 @@ const Contenedor = styled.div`
         background-color: #D4D4D4;
         border-radius: 8px;
     }
-
-    p{
-        margin: 1rem 0;
-    }
     
     article{
         width: 100%;
+        padding: 1rem;
+        margin: 0;
+        border-bottom: 1px solid #d0d0d0;
     }
 `;
 
@@ -48,7 +47,6 @@ const ContendorNodos = styled.div`
     justify-content: center;
     align-items: center;
     gap: 20px;
-    margin-bottom: 2rem;
     flex-wrap: wrap;
 `;
 
@@ -69,6 +67,7 @@ const ContendorNodo = styled.div`
 const P = styled.p`
   color: ${(props => props.rojo? '#E34747': 'black')};
   font-size: 1.15rem;
+  margin: 0.8rem 0;
 `;
 
 export {Contenedor, ContendorNodos, ContendorNodo, P};

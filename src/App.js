@@ -74,14 +74,15 @@ function App() {
     <Contenedor className="App">
       <article>
         <h1>Representación y Análisis de Grafos No Dirigidos</h1>
-        <br/><hr/>
+      </article>
+      <article>
         <P><b>Paso 1:</b> Defina el número de nodos del grafo a representar.</P>
         <form onSubmit={actualizarNodos}>
-          <Input id='inp-numNodos' type='number' placeholder='Número de nodos' min={1}
+          <Input id='inp-numNodos' type='number' placeholder='Número de nodos' min='1' max='40'
             onChange={cambiarNumNodos}
           /><br/>
           <Boton type='submit'>Construir Nodos</Boton>
-        </form><hr/>
+        </form>
       </article>
 
       <article>
@@ -94,14 +95,22 @@ function App() {
               setMatrizAdya={setMatrizAdya}
             />
           })}
-        </ContendorNodos><hr />
+        </ContendorNodos>
       </article>
 
       <article>
         <P><b>Paso 3:</b> Cuando su grafo esté listo oprima el botón de <b>Obtener Resultados</b> para ver las conclusiones del grafo introducido.</P>
           {resultadosAnalisis}
         <Boton onClick={mostrarConclusiones}>Obtener Resultados</Boton>
-        <hr/><br />
+      </article>
+      <article>
+        <h3>Universidad de Antioquia</h3>
+        <p>Facultad de Ingeniería - Ing de Sistemas</p>
+        <p>Matemáticas Discretas II</p><br/>
+        <p>Desarrollado por:</p>
+        <p>Jose David Gómez Muñetón - D.I: </p>
+        <p>Emanuel López Higuita - D.I: </p>
+        <p>Rony Santiago Bañol Rico - D.I: </p>
       </article>
     </Contenedor>
   );

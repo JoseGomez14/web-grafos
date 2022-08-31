@@ -42,15 +42,7 @@ const esRegular = (matrizAdya) => {
 
 const esEuleriano = (matrizAdya, numAristas) => {
     let nVertices = matrizAdya.length;
-    return factorial(nVertices) / (2 * factorial(nVertices - 2)) === numAristas;
-}
-
-const factorial = (n) => {
-    var total = 1;
-    for (let i = 1; i <= n; i++) {
-        total = total * i;
-    }
-    return total;
+    return false;
 }
 
 const transponerMatriz = (matriz) => {

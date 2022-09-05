@@ -6,6 +6,7 @@ import Input from './elements/Input';
 import Nodo from './components/Nodo';
 import Boton from './elements/Boton';
 import Matrices from './components/Matrices';
+import DibujoGrafo from './funcs/FuncionesGraficas';
 
 function App() {
   const [numNodos, setNumNodos] = useState();
@@ -62,7 +63,10 @@ function App() {
         <P><b>Número de aristas: {numAristas}</b></P>
         <P><b>Grafo completo: {esCompleto(matrizAdya, numAristas)? 'Si': 'No'}</b></P>
         <P><b>Grafo regular: {esRegular(matrizAdya)? 'Si': 'No'}</b></P>
-        <P><b>Grafo Euleriano: {esEuleriano(matrizAdya, numAristas)? 'Si': 'No'}</b></P>
+        <P><b>Grafo Euleriano: {esEuleriano(matrizAdya)? 'Si': 'No'}</b></P>
+        <br/>
+        <P><b>Gráfico del Grafo</b></P>
+        <DibujoGrafo matrizInci={matrizInci} numNodos={matrizAdya.length} numAristas={numAristas}/>
         <br/>
       </>
     :<P rojo>Aún no hay datos en el grafo.</P>
@@ -106,11 +110,11 @@ function App() {
       <article>
         <h3>Universidad de Antioquia</h3>
         <p>Facultad de Ingeniería - Ing de Sistemas</p>
-        <p>Matemáticas Discretas II</p><br/>
+        <p>Matemáticas Discretas II - 2022-1/G2</p><br/>
         <p>Desarrollado por:</p>
-        <p>Jose David Gómez Muñetón - D.I: </p>
-        <p>Emanuel López Higuita - D.I: </p>
-        <p>Rony Santiago Bañol Rico - D.I: </p>
+        <p>Jose David Gómez Muñetón</p>
+        <p>Emanuel López Higuita</p>
+        <p>Rony Santiago Bañol Rico</p>
       </article>
     </Contenedor>
   );

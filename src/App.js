@@ -7,6 +7,7 @@ import Nodo from './components/Nodo';
 import Boton from './elements/Boton';
 import Matrices from './components/Matrices';
 import DibujoGrafo from './funcs/FuncionesGraficas';
+import { ContenedorTabla } from './elements/Tablas';
 
 function App() {
   const [numNodos, setNumNodos] = useState();
@@ -66,7 +67,9 @@ function App() {
         <P><b>Grafo Euleriano: {esEuleriano(matrizAdya)? 'Si': 'No'}</b></P>
         <br/>
         <P><b>Gráfico del Grafo</b></P>
-        <DibujoGrafo matrizInci={matrizInci} numNodos={matrizAdya.length} numAristas={numAristas}/>
+        <ContenedorTabla>
+          <DibujoGrafo matrizInci={matrizInci} numNodos={matrizAdya.length} numAristas={numAristas}/>
+        </ContenedorTabla>
         <br/>
       </>
     :<P rojo>Aún no hay datos en el grafo.</P>
